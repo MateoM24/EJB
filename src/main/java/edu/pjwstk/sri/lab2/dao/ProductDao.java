@@ -17,7 +17,7 @@ import edu.pjwstk.sri.lab2.model.Product;
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)//M
-@TransactionAttribute(TransactionAttributeType.MANDATORY)//M 
+@TransactionAttribute(TransactionAttributeType.REQUIRED)//M 
 public class ProductDao {
 	@PersistenceContext(unitName = "sri2-persistence-unit")
 	private EntityManager em;

@@ -23,7 +23,7 @@ import edu.pjwstk.sri.lab2.model.Category;
 @Startup//M
 @Singleton//M
 @TransactionManagement(TransactionManagementType.CONTAINER)//M
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)//M 
+@TransactionAttribute(TransactionAttributeType.REQUIRED)//M //było REQUIRES_NEW
 public class CategoryDao {
 	@PersistenceContext(unitName = "sri2-persistence-unit")
 	private EntityManager em;
@@ -47,9 +47,9 @@ public class CategoryDao {
 		return em.merge(entity);
 	}
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)//M
-	@Schedule(minute="*/1",hour="*")//M minute="*/10"
+	@Schedule(minute="*/10",hour="*")//M minute="*/10"
 	@PostConstruct//M
-	public void listAll() {
+	private void listAll() {
 		System.out.println("-----dziala-CategoryDao------");
 					//public void listAll(Integer startPosition, Integer maxResult) {
 					//public List<Category> listAll(Integer startPosition, Integer maxResult) {
