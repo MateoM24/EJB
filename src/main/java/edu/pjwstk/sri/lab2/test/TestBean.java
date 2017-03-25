@@ -21,9 +21,6 @@ public class TestBean implements Serializable {
 
 	private static final long serialVersionUID = 24010203L;
 	
-	//@PersistenceContext(unitName = "sri2-persistence-unit")
-	//private EntityManager em; niepotrzebne
-	
 	@Inject
 	private CategoryDao catService;
 	
@@ -46,19 +43,33 @@ public class TestBean implements Serializable {
 		}
 		System.out.print(" ===========Produkty:============");
 		List<Product> listProd = productService.listAll(0, 100);
+		for(Product prod:listProd){
+			System.out.println(prod);
+		}
 		Product pid0 = null;
 		Product pid1 = null;
+		Product pid2 = null;
 		Product pid3 = null;
 		for(Product p:listProd){
 			long id=p.getId();
+			p.setVersion(1);
 			if(id==2000l)pid0=p;
 			if(id==2001l)pid1=p;
+			if(id==2002l)pid2=p;
 			if(id==2003l)pid3=p;
 		}
-		
+		//test 1 transakcja ok
 		shoppingCart.addToCart(pid0, 2);
+		shoppingCart.addToCart(pid1, 2);
 		shoppingCart.makeOrder();
-		System.out.println("==Koniec testu==");
+		System.out.println("koniec testu 1.");
+		//test 2 transakcja bedzie wycofana
+		shoppingCart.clearCart();
+		shoppingCart.addToCart(pid2, 3);
+		shoppingCart.addToCart(pid3, 3);
+		shoppingCart.makeOrder();
+		System.out.println("koniec testu 2.");
+		System.out.println("==Koniec testów==");
 		
 	}
 

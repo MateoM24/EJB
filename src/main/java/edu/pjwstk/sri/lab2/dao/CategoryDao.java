@@ -23,11 +23,12 @@ import edu.pjwstk.sri.lab2.model.Category;
 @Startup//M
 @Singleton//M
 @TransactionManagement(TransactionManagementType.CONTAINER)//M
-@TransactionAttribute(TransactionAttributeType.REQUIRED)//M //było REQUIRES_NEW
+@TransactionAttribute(TransactionAttributeType.REQUIRED)//M
 public class CategoryDao {
 	@PersistenceContext(unitName = "sri2-persistence-unit")
 	private EntityManager em;
 	private List<Category> categories;
+	
 	public void create(Category entity) {
 		em.persist(entity);
 	}
@@ -50,7 +51,7 @@ public class CategoryDao {
 	@Schedule(minute="*/10",hour="*")//M minute="*/10"
 	@PostConstruct//M
 	private void listAll() {
-		System.out.println("-----dziala-CategoryDao------");
+		System.out.println("------CategoryDao sprawdza listę kategorii------");
 					//public void listAll(Integer startPosition, Integer maxResult) {
 					//public List<Category> listAll(Integer startPosition, Integer maxResult) {
 		TypedQuery<Category> findAllQuery = em
@@ -65,8 +66,9 @@ public class CategoryDao {
 			}
 		 	findAllQuery.getResultList();*/
 	categories=findAllQuery.getResultList();
-		System.out.println("-------koniec categoryDao------");
+		System.out.println("-------koniec metody categoryDao, które co 10min sprawdza listę kategorii------");
 	}
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)//M
 	public List<Category> getList(){//M
 		return categories;
 	}

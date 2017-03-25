@@ -36,6 +36,7 @@ public class ShoppingCart{
 		orderItem=new OrderItem();
 		orderItem.setProduct(product);
 		orderItem.setAmount(quantity);
+	
 		cart.add(orderItem);
 	}
 	public void removeFromCart(Product product){
@@ -47,6 +48,10 @@ public class ShoppingCart{
 			}
 		}
 	}
+	public void clearCart(){
+		cart.clear();
+	}
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void makeOrder(){
 		products=productService.listAll(1, 100);
 		Product pNew;
@@ -68,5 +73,51 @@ public class ShoppingCart{
 			pOld.setStock(newStock);
 			productService.update(pOld);
 		}
+		
 	}
+	//================
+	/*
+		private List<OrderItem> cart=new ArrayList<OrderItem>();
+	
+		private List<Product> products=new ArrayList<Product>();
+	
+	public void makeOrder(){
+		products=productService.listAll(1, 100);
+		Product pNew;
+		Product pOld;
+		int quantity;
+		int initialStock;
+		int newStock;
+		for(OrderItem oi:cart){
+			pNew=oi.getProduct();
+			quantity=oi.getAmount();
+			pOld=productService.findById(pNew.getId());
+			initialStock=pOld.getStock();
+			newStock=initialStock-quantity;
+			if(newStock<0){
+				ejbContext.setRollbackOnly();//wycofujemy transakcje
+				System.out.println("Braki w magazynie! -transackcja wycofana");
+				return;
+			}
+			pOld.setStock(newStock);
+			productService.update(pOld);
+		}
+		
+	}
+		public void addToCart(Product product,int quantity){
+		orderItem=new OrderItem();
+		orderItem.setProduct(product);
+		orderItem.setAmount(quantity);
+		cart.add(orderItem);
+	}
+	public void removeFromCart(Product product){
+		Product p=null;
+		for(OrderItem oi:cart){
+			if(oi.getProduct()==product){
+				cart.remove(product);
+				break;
+			}
+		}
+	}
+	*/
 }

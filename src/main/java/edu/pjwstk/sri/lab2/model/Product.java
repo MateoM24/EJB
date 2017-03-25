@@ -66,6 +66,7 @@ public class Product implements Serializable {
 		String result = getClass().getSimpleName() + " ";
 		if (id != null)
 			result += "id: " + id;
+		result +=" product name: "+this.getName();
 		return result;
 	}
 
