@@ -1,7 +1,9 @@
 package edu.pjwstk.sri.lab2.test;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
@@ -58,17 +60,46 @@ public class TestBean implements Serializable {
 			if(id==2002l)pid2=p;
 			if(id==2003l)pid3=p;
 		}
+		//testy shoppingCart
 		//test 1 transakcja ok
 		shoppingCart.addToCart(pid0, 2);
 		shoppingCart.addToCart(pid1, 2);
 		shoppingCart.makeOrder();
+		shoppingCart.clearCart();
 		System.out.println("koniec testu 1.");
 		//test 2 transakcja bedzie wycofana
-		shoppingCart.clearCart();
 		shoppingCart.addToCart(pid2, 3);
 		shoppingCart.addToCart(pid3, 3);
 		shoppingCart.makeOrder();
+		shoppingCart.clearCart();
 		System.out.println("koniec testu 2.");
+		
+		//testy CategoryDAO i ProdutDao
+		Category newCategory = new Category();
+		//newCategory.setId(1017L);
+		Set<Category> catSet=new HashSet();
+		catSet.add(catService.findById(1002L));
+		newCategory.setChildCategories(catSet);
+		newCategory.setParentCategory(catService.findById(1003L));
+		newCategory.setName("NowaKategoria");
+		catService.create(newCategory);
+		Product newProduct = new Product();
+		newProduct.setCategory(catService.findById(1003L));
+		//newProduct.setId(2017L);
+		newProduct.setName("NowyProdukt");
+		newProduct.setStock(100);
+		newProduct.setVersion(1);
+		productService.create(newProduct);
+		Product newProductUsun = new Product();
+		newProductUsun.setCategory(catService.findById(1003L));
+		//newProductUsun.setId(2018L);
+		newProductUsun.setName("NowyProduktDoUsuniecia");
+		newProductUsun.setStock(100);
+		newProductUsun.setVersion(1);
+		productService.create(newProductUsun);
+		
+		System.out.println("find by Id (dell xps): "+productService.findById(2005L));
+		productService.deleteById(2005L);
 		System.out.println("==Koniec testów==");
 		
 	}
