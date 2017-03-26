@@ -60,6 +60,7 @@ public class TestBean implements Serializable {
 			if(id==2002l)pid2=p;
 			if(id==2003l)pid3=p;
 		}
+		
 		//testy shoppingCart
 		//test 1 transakcja ok
 		shoppingCart.addToCart(pid0, 2);
@@ -90,16 +91,15 @@ public class TestBean implements Serializable {
 		newProduct.setStock(100);
 		newProduct.setVersion(1);
 		productService.create(newProduct);
-		Product newProductUsun = new Product();
-		newProductUsun.setCategory(catService.findById(1003L));
-		//newProductUsun.setId(2018L);
-		newProductUsun.setName("NowyProduktDoUsuniecia");
-		newProductUsun.setStock(100);
-		newProductUsun.setVersion(1);
-		productService.create(newProductUsun);
 		
 		System.out.println("find by Id (dell xps): "+productService.findById(2005L));
 		productService.deleteById(2005L);
+	
+		Category catEdytowana = catService.findById(1001L);
+		catEdytowana.setName(catEdytowana.getName()+" kategoria edytowana");
+		catService.update(catEdytowana);
+		catService.deleteById(1009L);
+		System.out.println("usunąłem kategorię Programy antywirusowe o id=1009");
 		System.out.println("==Koniec testów==");
 		
 	}
